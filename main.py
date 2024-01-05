@@ -2,6 +2,7 @@ from tkinter import *
 import random
 from PIL import Image, ImageTk
 import pyperclip
+from tkinter import messagebox
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def password_generator():
@@ -19,9 +20,11 @@ def save_password():
     email = email_entry.get()
     password = pw_entry.get()
 
+    is_ok = messagebox.askokcancel(title=website, message=f"Please Confirm Before Saving: \nEmail: {email} \nPassword: {password} \nDo you want to save?")
+
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         canvas.itemconfig(message_text, text="Please fill out all fields!", fill="red")
-    else:
+    elif is_ok:
         with open("data.txt", "a") as file:
             file.write(f"\n{website} | {email} | {password}\n")
         website_entry.delete(0, END)
