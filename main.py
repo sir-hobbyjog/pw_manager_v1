@@ -17,7 +17,7 @@ def password_generator():
 
 
 def save_password():
-    website = website_entry.get()
+    website = website_entry.get().title()
     email = email_entry.get()
     password = pw_entry.get()
     new_data = {
@@ -51,16 +51,21 @@ def save_password():
 
 # ---------------------------- FIND PASSWORD ------------------------------- #
 def find_password():
-    website = website_entry.get()
+    website = website_entry.get().title()
     try:
         with open("pw_manager_v1/data.json", "r") as data_file:
             data = json.load(data_file)
+            
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found")
+    else:
+        if website in data:
             email = data[website]["email"]
             password = data[website]["password"]
             pyperclip.copy(password)
             messagebox.showinfo(title=website, message=f"Email: {email} \nPassword: {password}")
-    except FileNotFoundError:
-        messagebox.showinfo(title="Error", message="No Data File Found")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {website} exist.")
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Local Password Manager")
